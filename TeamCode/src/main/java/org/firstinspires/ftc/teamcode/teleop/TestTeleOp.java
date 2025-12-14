@@ -61,7 +61,7 @@ public class TestTeleOp extends LinearOpMode {
 
         Servo angleServo = hardwareMap.get(Servo.class, "angleServo");
 
-        double ANGLE_ONE = 0.65;
+        double ANGLE_ONE = 0.8;
         double ANGLE_TWO = 0.5;
 
 
@@ -81,6 +81,7 @@ public class TestTeleOp extends LinearOpMode {
 
         double SERVO_BOTTOM = 0.5;
         double SERVO_TOP = 0.25;
+        boolean isTop = false;
 
         boolean servoIsTop = false; // starts at bottom
 
@@ -130,16 +131,20 @@ public class TestTeleOp extends LinearOpMode {
             if (gamepad2.left_bumper) {
                 angleServo.setPosition(ANGLE_ONE);
                 angleServoPos = ANGLE_ONE;
+                isTop = false;
             } else if (gamepad2.right_bumper) {
                 angleServo.setPosition(ANGLE_TWO);
                 angleServoPos = ANGLE_TWO;
+                isTop = true;
             }
 
 
 
 
-            if (gamepad1.left_trigger >= 0.7) {
+            if (gamepad1.left_trigger >= 0.7 && !isTop) {
                 //powerMotor.setVelocity(ticksPerSecond);
+                powerMotor.setPower(-0.6);
+            } else  if (gamepad1.left_trigger >= 0.7 && isTop){
                 powerMotor.setPower(-1.0);
             } else {
                 powerMotor.setPower(0.0);
@@ -168,6 +173,7 @@ public class TestTeleOp extends LinearOpMode {
                     -gamepad1.right_stick_x
             ));
 
+            /*
             telemetry.addData("LF", robot.dt.drivebase.leftFront.getPower());
             telemetry.addData("LB", robot.dt.drivebase.leftBack.getPower());
             telemetry.addData("RF", robot.dt.drivebase.rightFront.getPower());
@@ -178,7 +184,7 @@ public class TestTeleOp extends LinearOpMode {
             telemetry.addData("red: ",colorSensor.red());
             telemetry.addData("green: ",colorSensor.green());
             telemetry.addData("blue: ",colorSensor.blue());
-            telemetry.addData("currentIndex, currentBalls: ", robot.currentIndex+", "+ Arrays.toString(robot.currentBalls));
+            telemetry.addData("currentIndex, currentBalls: ", robot.currentIndex+", "+ Arrays.toString(robot.currentBalls));*/
 /*
 
 
@@ -220,25 +226,25 @@ public class TestTeleOp extends LinearOpMode {
             }
 
             if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
-                indexServo.setPosition((0.33)); // a little higher
+                indexServo.setPosition((0.38)); // a little higher
             }
 
             if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
-                indexServo.setPosition(0.67);
+                indexServo.setPosition(0.75);
             }
 
             if (intakePad.wasJustPressed(GamepadKeys.Button.B)) {
-                indexServo.setPosition(0.17); // lower
+                indexServo.setPosition(0.22); // lower
             }
 
             if (intakePad.wasJustPressed(GamepadKeys.Button.Y)) {
-                indexServo.setPosition(0.5); // slightl lower
+                indexServo.setPosition(0.58); // slightl lower
             }
 
             // dpad up (0,357) to (0,592)
 
             if (intakePad.wasJustPressed(GamepadKeys.Button.X)) {
-                indexServo.setPosition(0.84); //
+                indexServo.setPosition(1.0); //
             }
 
             // Outtake actually launch
@@ -268,6 +274,9 @@ public class TestTeleOp extends LinearOpMode {
                     transferServo.setPosition(SERVO_BOTTOM);
                 }
             }
+
+            telemetry.addData("Index Servo",indexServo.getPosition());
+            telemetry.addData("Scoop Servo", transferServo.getPosition());
 
 
             dashboard.sendTelemetryPacket(packet);
