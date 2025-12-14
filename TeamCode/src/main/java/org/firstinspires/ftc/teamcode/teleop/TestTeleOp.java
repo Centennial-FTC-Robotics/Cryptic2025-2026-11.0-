@@ -215,29 +215,29 @@ public class TestTeleOp extends LinearOpMode {
 */
 
 
-            if (intakePad.wasJustPressed(GamepadKeys.Button.B)) {
+            if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
                 indexServo.setPosition(0.01);
             }
 
-            if (intakePad.wasJustPressed(GamepadKeys.Button.Y)) {
+            if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
                 indexServo.setPosition((0.33)); // a little higher
             }
 
-            if (intakePad.wasJustPressed(GamepadKeys.Button.X)) {
+            if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
                 indexServo.setPosition(0.67);
             }
 
-            if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
+            if (intakePad.wasJustPressed(GamepadKeys.Button.B)) {
                 indexServo.setPosition(0.17); // lower
             }
 
-            if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
+            if (intakePad.wasJustPressed(GamepadKeys.Button.Y)) {
                 indexServo.setPosition(0.5); // slightl lower
             }
 
             // dpad up (0,357) to (0,592)
 
-            if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
+            if (intakePad.wasJustPressed(GamepadKeys.Button.X)) {
                 indexServo.setPosition(0.84); //
             }
 

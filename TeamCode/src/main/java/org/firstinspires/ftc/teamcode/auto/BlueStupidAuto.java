@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.Cryptic.Robot;
 
-@Autonomous(name = "StupidAuto")
-public class StupidAuto extends LinearOpMode {
+@Autonomous(name = "BlueStupidAuto")
+public class BlueStupidAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -69,8 +69,8 @@ public class StupidAuto extends LinearOpMode {
         sleep(TRANSFER_UP_MS);
 
         transferServo.setPosition(SERVO_BOTTOM);
+        bandMotor.setVelocity(725.0);
         sleep(TRANSFER_DOWN_MS);
-
         indexServo.setPosition(0.33);
         sleep(INDEX_SETTLE_MS);
 
@@ -88,7 +88,7 @@ public class StupidAuto extends LinearOpMode {
 
         transferServo.setPosition(SERVO_BOTTOM);
         sleep(TRANSFER_DOWN_MS);
-
+        bandMotor.setVelocity(0.0);
         powerMotor.setPower(0.0);
         sleep(100);
 
