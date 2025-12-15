@@ -222,29 +222,29 @@ public class TestTeleOp extends LinearOpMode {
 
 
             if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
-                indexServo.setPosition(0.01);
+                indexServo.setPosition(0.03);
             }
 
             if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
-                indexServo.setPosition((0.38)); // a little higher
+                indexServo.setPosition((0.42)); // a little higher
             }
 
             if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
-                indexServo.setPosition(0.75);
+                indexServo.setPosition(0.78);
             }
 
             if (intakePad.wasJustPressed(GamepadKeys.Button.B)) {
-                indexServo.setPosition(0.22); // lower
+                indexServo.setPosition(0.23); // lower
             }
 
             if (intakePad.wasJustPressed(GamepadKeys.Button.Y)) {
-                indexServo.setPosition(0.58); // slightl lower
+                indexServo.setPosition(0.6); // slightl lower
             }
 
             // dpad up (0,357) to (0,592)
 
             if (intakePad.wasJustPressed(GamepadKeys.Button.X)) {
-                indexServo.setPosition(1.0); //
+                indexServo.setPosition(0.95); //
             }
 
             // Outtake actually launch
