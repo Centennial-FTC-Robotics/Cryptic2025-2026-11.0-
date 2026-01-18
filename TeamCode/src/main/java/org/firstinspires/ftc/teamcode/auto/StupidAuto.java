@@ -10,9 +10,10 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.Cryptic.Robot;
+import org.Cryptic.Subsystems.Outtake;
 
-@Autonomous(name = "FarEnd")
-public class FarEnd extends LinearOpMode {
+@Autonomous(name = "StupidAuto")
+public class StupidAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -31,73 +32,72 @@ public class FarEnd extends LinearOpMode {
 
         DcMotorEx powerMotor = hardwareMap.get(DcMotorEx.class, "powerMotor");
 
-        double ANGLE_TWO = 0.5;
+        // double ANGLE_ONE = 0.65;
 
-        double SERVO_BOTTOM = 0.5;
-        double SERVO_TOP = 0.25;
-
-        int DRIVE_TIME_MS = 400;
+        int DRIVE_TIME_MS = 1000;
 
         int INDEX_SETTLE_MS = 1000;     // give index servo time to actually move
-        int FLYWHEEL_SPINUP_MS = 5000;  // time to reach speed before feeding
+        int FLYWHEEL_SPINUP_MS = 1000;  // time to reach speed before feeding
         int TRANSFER_UP_MS = 1000;      // how long transfer stays up to feed/shoot
         int TRANSFER_DOWN_MS = 1000;    // time to retract + let ball clear
-
-
-        double OUTTAKE1 = 0.01;
-        double OUTTAKE2 = 0.38;
-        double OUTTAKE3 = 0.75;
-
 
         waitForStart();
         if (isStopRequested()) return;
 
-        indexServo.setPosition(OUTTAKE1);
-        transferServo.setPosition(SERVO_BOTTOM);
-        angleServo.setPosition(ANGLE_TWO);
+        // indexServo.setPosition(0.0);
+        robot.intake.encoderSpin(5);
+        transferServo.setPosition(Outtake.rest);
+        angleServo.setPosition(0.0);
 
         sleep(200);
 
+        robot.dt.drivebase.setDrivePowers(new PoseVelocity2d(
+                new Vector2d(-1, 0),  // keep your sign; flip if wrong direction
+                0
+        ));
+        sleep(DRIVE_TIME_MS);
+        robot.dt.drivebase.setDrivePowers(new PoseVelocity2d(new Vector2d(0, 0), 0));
+        sleep(150);
 
-
-        powerMotor.setPower(-1.0);
+        powerMotor.setPower(-1.0); // might need to adjust
         sleep(FLYWHEEL_SPINUP_MS);
 
         sleep(INDEX_SETTLE_MS);
 
-        transferServo.setPosition(SERVO_TOP);
+        transferServo.setPosition(Outtake.liftUp);
         sleep(TRANSFER_UP_MS);
 
-        transferServo.setPosition(SERVO_BOTTOM);
-        bandMotor.setVelocity(725.0);
+        transferServo.setPosition(Outtake.rest);
         sleep(TRANSFER_DOWN_MS);
-        indexServo.setPosition(OUTTAKE2);
+
+        // indexServo.setPosition(0.5);
+        robot.intake.encoderSpin(3);
         sleep(INDEX_SETTLE_MS);
 
-        transferServo.setPosition(SERVO_TOP);
+        transferServo.setPosition(Outtake.liftUp);
         sleep(TRANSFER_UP_MS);
 
-        transferServo.setPosition(SERVO_BOTTOM);
+        transferServo.setPosition(Outtake.rest);
         sleep(TRANSFER_DOWN_MS);
 
-        indexServo.setPosition(OUTTAKE3);
+        // indexServo.setPosition(0.84);
+        robot.intake.encoderSpin(1);
         sleep(INDEX_SETTLE_MS);
 
-        transferServo.setPosition(SERVO_TOP);
+        transferServo.setPosition(Outtake.liftUp);
         sleep(TRANSFER_UP_MS);
 
-        transferServo.setPosition(SERVO_BOTTOM);
+        transferServo.setPosition(Outtake.rest);
         sleep(TRANSFER_DOWN_MS);
-        bandMotor.setVelocity(0.0);
+
         powerMotor.setPower(0.0);
         sleep(100);
 
         robot.dt.drivebase.setDrivePowers(new PoseVelocity2d(
-                new Vector2d(1, 0),  // keep your sign; flip if wrong direction
+                new Vector2d(0, -1),
                 0
         ));
-        sleep(DRIVE_TIME_MS);
-
+        sleep(1000);
         robot.dt.drivebase.setDrivePowers(new PoseVelocity2d(new Vector2d(0, 0), 0)); // STOP
     }
 }

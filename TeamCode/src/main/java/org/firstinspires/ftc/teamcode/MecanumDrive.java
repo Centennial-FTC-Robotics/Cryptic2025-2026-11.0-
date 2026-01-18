@@ -67,14 +67,14 @@ public final class MecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
 
         // drive model parameters
-        public double inPerTick = 1;
-        public double lateralInPerTick = inPerTick;
-        public double trackWidthTicks = 0;
+        public double inPerTick = 0.00193071191602763;
+        public double lateralInPerTick = 22.971267775413644;
+        public double trackWidthTicks = 7087.998023292532;
 
         // feedforward parameters (in tick units)
-        public double kS = 0;
-        public double kV = 0;
-        public double kA = 0;
+        public double kS = 2.2408380362549085;
+        public double kV = 0.00026390914893385743;
+        public double kA = 0.000025;
 
         // path profile parameters (in inches)
         public double maxWheelVel = 50;
@@ -86,9 +86,9 @@ public final class MecanumDrive {
         public double maxAngAccel = Math.PI;
 
         // path controller gains
-        public double axialGain = 0.0;
-        public double lateralGain = 0.0;
-        public double headingGain = 0.0; // shared with turn
+        public double axialGain = 3.0;
+        public double lateralGain = 10.0;
+        public double headingGain = 8.0; // shared with turn
 
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;
@@ -251,13 +251,9 @@ public final class MecanumDrive {
 
 
         // reverse motor directions if needed
-        /*
+
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);*/
-
-
-
-
+        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //   leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -268,11 +264,8 @@ public final class MecanumDrive {
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
-        double startX = 0; // TODO
-        double startY = 0;
-        double heading = 0;
         // localizer = new TwoDeadWheelLocalizer(hardwareMap, lazyImu.get(), PARAMS.inPerTick, new Pose2d(startX, startY, heading));
-        localizer = new PinpointLocalizer(hardwareMap, PARAMS.inPerTick, new Pose2d(startX, startY, heading));
+        localizer = new PinpointLocalizer(hardwareMap, PARAMS.inPerTick, pose);
 
         FlightRecorder.write("MECANUM_PARAMS", PARAMS);
     }
@@ -309,8 +302,8 @@ public final class MecanumDrive {
 
         leftFront.setPower(wheelVels.leftFront.get(0) / maxPowerMag);
         leftBack.setPower(wheelVels.leftBack.get(0) / maxPowerMag);
-        rightBack.setPower(-1 * wheelVels.rightBack.get(0) / maxPowerMag);
-        rightFront.setPower(-1 * wheelVels.rightFront.get(0) / maxPowerMag);
+        rightBack.setPower(wheelVels.rightBack.get(0) / maxPowerMag);
+        rightFront.setPower(wheelVels.rightFront.get(0) / maxPowerMag);
     }
 
 
@@ -502,14 +495,14 @@ public final class MecanumDrive {
     public PoseVelocity2d updatePoseEstimate() {
         PoseVelocity2d vel = localizer.update();
         poseHistory.add(localizer.getPose());
-
+        
         while (poseHistory.size() > 100) {
             poseHistory.removeFirst();
         }
 
         estimatedPoseWriter.write(new PoseMessage(localizer.getPose()));
-
-
+        
+        
         return vel;
     }
 

@@ -14,12 +14,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
+
 import org.Cryptic.Robot;
 
 import java.util.Arrays;
 
-@TeleOp(name = "TestTeleOp")
-public class TestTeleOp extends LinearOpMode {
+@TeleOp(name = "ManualTeleOp")
+public class ManualTeleOp extends LinearOpMode {
 
     //@Override
     public void runOpMode() throws InterruptedException {
@@ -61,7 +62,7 @@ public class TestTeleOp extends LinearOpMode {
 
         Servo angleServo = hardwareMap.get(Servo.class, "angleServo");
 
-        double ANGLE_ONE = 0.8;
+        double ANGLE_ONE = 0.65;
         double ANGLE_TWO = 0.5;
 
 
@@ -75,22 +76,19 @@ public class TestTeleOp extends LinearOpMode {
         rightBack.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
         rightFront.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
 
+        boolean cooldown = false;
+
         double CPR = 145.6;
 
         double ticksPerSecond = 850 * CPR / 60.0;
 
         double SERVO_BOTTOM = 0.5;
         double SERVO_TOP = 0.25;
-        boolean isTop = false;
 
         boolean servoIsTop = false; // starts at bottom
 
-
-
-
-
-
         waitForStart();
+        long startTime;
         indexServo.setPosition(0.01);
         transferServo.setPosition(SERVO_BOTTOM);
 
@@ -131,20 +129,16 @@ public class TestTeleOp extends LinearOpMode {
             if (gamepad2.left_bumper) {
                 angleServo.setPosition(ANGLE_ONE);
                 angleServoPos = ANGLE_ONE;
-                isTop = false;
             } else if (gamepad2.right_bumper) {
                 angleServo.setPosition(ANGLE_TWO);
                 angleServoPos = ANGLE_TWO;
-                isTop = true;
             }
 
 
 
 
-            if (gamepad1.left_trigger >= 0.7 && !isTop) {
+            if (gamepad1.left_trigger >= 0.7) {
                 //powerMotor.setVelocity(ticksPerSecond);
-                powerMotor.setPower(-0.6);
-            } else  if (gamepad1.left_trigger >= 0.7 && isTop){
                 powerMotor.setPower(-1.0);
             } else {
                 powerMotor.setPower(0.0);
@@ -173,7 +167,6 @@ public class TestTeleOp extends LinearOpMode {
                     -gamepad1.right_stick_x
             ));
 
-            /*
             telemetry.addData("LF", robot.dt.drivebase.leftFront.getPower());
             telemetry.addData("LB", robot.dt.drivebase.leftBack.getPower());
             telemetry.addData("RF", robot.dt.drivebase.rightFront.getPower());
@@ -184,7 +177,7 @@ public class TestTeleOp extends LinearOpMode {
             telemetry.addData("red: ",colorSensor.red());
             telemetry.addData("green: ",colorSensor.green());
             telemetry.addData("blue: ",colorSensor.blue());
-            telemetry.addData("currentIndex, currentBalls: ", robot.currentIndex+", "+ Arrays.toString(robot.currentBalls));*/
+            telemetry.addData("currentIndex, currentBalls: ", robot.currentIndex+", "+ Arrays.toString(robot.currentBalls));
 /*
 
 
@@ -221,63 +214,10 @@ public class TestTeleOp extends LinearOpMode {
 */
 
 
-            if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
-                indexServo.setPosition(0.03);
-            }
-
-            if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
-                indexServo.setPosition((0.42)); // a little higher
-            }
-
-            if (intakePad.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
-                indexServo.setPosition(0.78);
-            }
-
-            if (intakePad.wasJustPressed(GamepadKeys.Button.B)) {
-                indexServo.setPosition(0.23); // lower
-            }
-
-            if (intakePad.wasJustPressed(GamepadKeys.Button.Y)) {
-                indexServo.setPosition(0.6); // slightl lower
-            }
-
-            // dpad up (0,357) to (0,592)
-
-            if (intakePad.wasJustPressed(GamepadKeys.Button.X)) {
-                indexServo.setPosition(0.95); //
-            }
-
-            // Outtake actually launch
-
-
-            double stickY = -gamepad2.right_stick_y;
-
-            if (Math.abs(stickY) > 0.1) {
-                angleServoPos += stickY * SERVO_STEP;
-
-                // clamp between valid servo range
-                angleServoPos = Math.max(0.0, Math.min(1.0, angleServoPos));
-
-                angleServo.setPosition(angleServoPos);
-            }
-
-
-
-
-
+            // Read motif
             if (drivePad.wasJustPressed(GamepadKeys.Button.A)) {
-                servoIsTop = !servoIsTop; // toggle state
-
-                if (servoIsTop) {
-                    transferServo.setPosition(SERVO_TOP);
-                } else {
-                    transferServo.setPosition(SERVO_BOTTOM);
-                }
+                robot.camera.getMotif();
             }
-
-            telemetry.addData("Index Servo",indexServo.getPosition());
-            telemetry.addData("Scoop Servo", transferServo.getPosition());
-
 
             dashboard.sendTelemetryPacket(packet);
             telemetry.update();

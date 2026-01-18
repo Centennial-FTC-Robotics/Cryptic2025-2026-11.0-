@@ -3,7 +3,7 @@ package org.Cryptic;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.Cryptic.Commands.BaseActions;
-import org.Cryptic.Commands.SampleActions;
+import org.Cryptic.Commands.ScoringActions;
 import org.Cryptic.Subsystems.Camera;
 import org.Cryptic.Subsystems.Drivetrain;
 import org.Cryptic.Subsystems.IMU;
@@ -29,9 +29,12 @@ public class Robot {
             baseActions,
             camera
     };
-    public SampleActions sampleActions = new SampleActions();
+    public ScoringActions scoringActions = new ScoringActions();
 
-    public int currentIndex = 0; // index of the intake i think
+    public int currentIndex = 0; // index at either intake/outtake positions
+
+    public int currentIntakeIndex = 0;
+    public int currentOuttakeIndex = 0;
     public int targetIndex; // index of motif to shoot
 
     public int[] currentBalls = {-1, -1, -1}; // 1 for green 0 for purple -1 for empty
@@ -39,10 +42,23 @@ public class Robot {
 
     public int motif = 21; // 21 for GPP, 22 for PGP, 23 for PPG
 
+    public final int encoderTicks = 6600;
+    public final int[] targetPosition = {0, encoderTicks/6, encoderTicks*2/6, encoderTicks*3/6, encoderTicks*4/6, encoderTicks*5/6};
+    // intake0, outtake2, intake1, outtake0, intake2, outtake1
+    public boolean rotating = false;
+    public boolean rotatingIntake = false;
+    public boolean rotatingOuttake = false;
+
+    public double SPINDEXER_SPEED = 10_000.0;
+    public double SPINDEXER_MIN_SPEED = 0.07;
+
+    public double currentTurretRadians;
+
     public void initialize(LinearOpMode opmode) throws InterruptedException {
 
         for(Subsystem subsystem : subsystems) {
             subsystem.preInit(opmode, this);
         }
     }
+
 }
