@@ -1,14 +1,14 @@
 package org.Cryptic;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 import org.Cryptic.Commands.BaseActions;
 import org.Cryptic.Commands.ScoringActions;
 import org.Cryptic.Subsystems.Camera;
 import org.Cryptic.Subsystems.Drivetrain;
 import org.Cryptic.Subsystems.IMU;
-import org.Cryptic.Subsystems.Intake;
 import org.Cryptic.Subsystems.Outtake;
+import org.Cryptic.Subsystems.Intake;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public class Robot {
     public Drivetrain dt = new Drivetrain();

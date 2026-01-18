@@ -1,11 +1,15 @@
 package org.Cryptic.Subsystems;
 
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+
+import android.graphics.Color;
+
+
+// https://docs.revrobotics.com/rev-crossover-products/sensors/color-sensor/application-examples#onbot-java
 
 import org.Cryptic.Subsystem;
 

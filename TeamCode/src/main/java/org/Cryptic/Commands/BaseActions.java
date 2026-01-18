@@ -1,8 +1,7 @@
 package org.Cryptic.Commands;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 import org.Cryptic.Subsystem;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
 public class BaseActions extends Subsystem {
